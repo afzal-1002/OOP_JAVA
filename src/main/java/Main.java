@@ -1,50 +1,26 @@
-import java.util.List;
-
 /**
- * Run this class to see every concept from the slides happen live:
- * class/object creation, encapsulation, inheritance, abstraction,
- * reference type vs object type, and polymorphism.
+ * INHERITANCE DEMO ONLY -- no interfaces, no polymorphic dispatch
+ * through a shared reference type here. Just two subclasses reusing
+ * a parent's fields and methods via `extends`.
  *
- * Compile:  javac *.java
- * Run:      java Main
+ * Compile:  javac src/main/java/*.java -d out
+ * Run:      java -cp out Main
  */
 public class Main {
     public static void main(String[] args) {
-
-        System.out.println("== Creating objects from classes ==");
-        Student ana = new Student("Ana", 101, 20);
-        Instructor mrLee = new Instructor("Mr. Lee", 900);
-
-        System.out.println();
-        System.out.println("== Encapsulation: valid vs invalid data ==");
-        try {
-            ana.setAge(-5); // rejected by the class itself
-        } catch (IllegalArgumentException e) {
-            System.out.println("Rejected: " + e.getMessage());
-        }
-        System.out.println(ana.getName() + " is " + ana.getAge() + " years old");
+        System.out.println("== Inheritance: Car extends Vehicle ==");
+        Car car = new Car("Toyota", 180, 4);
+        car.start();      // inherited from Vehicle
+        car.showSpeed();  // inherited from Vehicle
+        car.showDoors();  // Car's own method
+        car.honk();        // Car's own method
 
         System.out.println();
-        System.out.println("== Abstraction: enroll through the interface ==");
-        Enrollable enrollableAna = ana; // caller only sees Enrollable's contract
-        Project capstone = new Project("Capstone");
-        enrollableAna.enroll(capstone);
-
-        System.out.println();
-        System.out.println("== Reference type vs. object type ==");
-        Person p = ana;
-        p.displayRole();          // OK -- Student's own version runs
-        // p.enroll(capstone);    // Would NOT compile: enroll() isn't on Person
-
-        System.out.println();
-        System.out.println("== Polymorphism: one call, many behaviors ==");
-        List<Person> people = List.of(ana, mrLee);
-        for (Person person : people) {
-            person.displayRole();
-        }
-
-        System.out.println();
-        System.out.println("== Grading (Gradable) ==");
-        mrLee.grade(ana, capstone, 95);
+        System.out.println("== Inheritance: Bike extends Vehicle ==");
+        Bike bike = new Bike("Trek", 40, true);
+        bike.start();        // inherited from Vehicle
+        bike.showSpeed();    // inherited from Vehicle
+        bike.showCarrier();  // Bike's own method
+        bike.ringBell();      // Bike's own method
     }
 }
