@@ -1,50 +1,44 @@
 import java.util.List;
 
 /**
- * Run this class to see every concept from the slides happen live:
- * class/object creation, encapsulation, inheritance, abstraction,
- * reference type vs object type, and polymorphism.
+ * POLYMORPHISM DEMO ONLY -- Shape/Circle/Rectangle exist purely to
+ * show one call, many behaviors. No encapsulated validation, no
+ * separate interfaces mixed in.
  *
- * Compile:  javac *.java
- * Run:      java Main
+ * Compile:  javac src/main/java/*.java -d out
+ * Run:      java -cp out Main
  */
 public class Main {
     public static void main(String[] args) {
+        System.out.println("== Runtime polymorphism: one call, many behaviors ==");
+        List<Shape> shapes = List.of(
+            new Circle(3),
+            new Rectangle(4, 5),
+            new Shape()
+        );
 
-        System.out.println("== Creating objects from classes ==");
-        Student ana = new Student("Ana", 101, 20);
-        Instructor mrLee = new Instructor("Mr. Lee", 900);
-
-        System.out.println();
-        System.out.println("== Encapsulation: valid vs invalid data ==");
-        try {
-            ana.setAge(-5); // rejected by the class itself
-        } catch (IllegalArgumentException e) {
-            System.out.println("Rejected: " + e.getMessage());
-        }
-        System.out.println(ana.getName() + " is " + ana.getAge() + " years old");
-
-        System.out.println();
-        System.out.println("== Abstraction: enroll through the interface ==");
-        Enrollable enrollableAna = ana; // caller only sees Enrollable's contract
-        Project capstone = new Project("Capstone");
-        enrollableAna.enroll(capstone);
-
-        System.out.println();
-        System.out.println("== Reference type vs. object type ==");
-        Person p = ana;
-        p.displayRole();          // OK -- Student's own version runs
-        // p.enroll(capstone);    // Would NOT compile: enroll() isn't on Person
-
-        System.out.println();
-        System.out.println("== Polymorphism: one call, many behaviors ==");
-        List<Person> people = List.of(ana, mrLee);
-        for (Person person : people) {
-            person.displayRole();
+        for (Shape shape : shapes) {
+            // Same line of code, different method runs depending on
+            // the actual object -- decided at runtime, not compile time.
+            System.out.println(shape.describe());
         }
 
         System.out.println();
-        System.out.println("== Grading (Gradable) ==");
-        mrLee.grade(ana, capstone, 95);
+        System.out.println("== Compile-time polymorphism: method overloading ==");
+        System.out.println("add(2, 3) = " + add(2, 3));
+        System.out.println("add(2.5, 3.5) = " + add(2.5, 3.5));
+        System.out.println("add(1, 2, 3) = " + add(1, 2, 3));
+    }
+
+    static int add(int a, int b) {
+        return a + b;
+    }
+
+    static double add(double a, double b) {
+        return a + b;
+    }
+
+    static int add(int a, int b, int c) {
+        return a + b + c;
     }
 }
