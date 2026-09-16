@@ -1,26 +1,44 @@
+import java.util.List;
+
 /**
- * INHERITANCE DEMO ONLY -- no interfaces, no polymorphic dispatch
- * through a shared reference type here. Just two subclasses reusing
- * a parent's fields and methods via `extends`.
+ * POLYMORPHISM DEMO ONLY -- Shape/Circle/Rectangle exist purely to
+ * show one call, many behaviors. No encapsulated validation, no
+ * separate interfaces mixed in.
  *
  * Compile:  javac src/main/java/*.java -d out
  * Run:      java -cp out Main
  */
 public class Main {
     public static void main(String[] args) {
-        System.out.println("== Inheritance: Car extends Vehicle ==");
-        Car car = new Car("Toyota", 180, 4);
-        car.start();      // inherited from Vehicle
-        car.showSpeed();  // inherited from Vehicle
-        car.showDoors();  // Car's own method
-        car.honk();        // Car's own method
+        System.out.println("== Runtime polymorphism: one call, many behaviors ==");
+        List<Shape> shapes = List.of(
+            new Circle(3),
+            new Rectangle(4, 5),
+            new Shape()
+        );
+
+        for (Shape shape : shapes) {
+            // Same line of code, different method runs depending on
+            // the actual object -- decided at runtime, not compile time.
+            System.out.println(shape.describe());
+        }
 
         System.out.println();
-        System.out.println("== Inheritance: Bike extends Vehicle ==");
-        Bike bike = new Bike("Trek", 40, true);
-        bike.start();        // inherited from Vehicle
-        bike.showSpeed();    // inherited from Vehicle
-        bike.showCarrier();  // Bike's own method
-        bike.ringBell();      // Bike's own method
+        System.out.println("== Compile-time polymorphism: method overloading ==");
+        System.out.println("add(2, 3) = " + add(2, 3));
+        System.out.println("add(2.5, 3.5) = " + add(2.5, 3.5));
+        System.out.println("add(1, 2, 3) = " + add(1, 2, 3));
+    }
+
+    static int add(int a, int b) {
+        return a + b;
+    }
+
+    static double add(double a, double b) {
+        return a + b;
+    }
+
+    static int add(int a, int b, int c) {
+        return a + b + c;
     }
 }
