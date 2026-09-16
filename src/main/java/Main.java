@@ -1,50 +1,36 @@
-import java.util.List;
-
 /**
- * Run this class to see every concept from the slides happen live:
- * class/object creation, encapsulation, inheritance, abstraction,
- * reference type vs object type, and polymorphism.
+ * ENCAPSULATION DEMO ONLY -- no inheritance, no interfaces,
+ * no polymorphism here. Just one class protecting its own data.
  *
- * Compile:  javac *.java
- * Run:      java Main
+ * Compile:  javac src/main/java/*.java -d out
+ * Run:      java -cp out Main
  */
 public class Main {
     public static void main(String[] args) {
+        System.out.println("== Encapsulation: BankAccount ==");
+        BankAccount account = new BankAccount("Ana", 100.0);
+        System.out.println(account.getOwner() + "'s starting balance: $" + account.getBalance());
 
-        System.out.println("== Creating objects from classes ==");
-        Student ana = new Student("Ana", 101, 20);
-        Instructor mrLee = new Instructor("Mr. Lee", 900);
+        account.deposit(50);
+        account.withdraw(30);
 
         System.out.println();
-        System.out.println("== Encapsulation: valid vs invalid data ==");
+        System.out.println("== Rejected operations (validated inside the class) ==");
         try {
-            ana.setAge(-5); // rejected by the class itself
+            account.deposit(-10);
         } catch (IllegalArgumentException e) {
             System.out.println("Rejected: " + e.getMessage());
         }
-        System.out.println(ana.getName() + " is " + ana.getAge() + " years old");
 
-        System.out.println();
-        System.out.println("== Abstraction: enroll through the interface ==");
-        Enrollable enrollableAna = ana; // caller only sees Enrollable's contract
-        Project capstone = new Project("Capstone");
-        enrollableAna.enroll(capstone);
-
-        System.out.println();
-        System.out.println("== Reference type vs. object type ==");
-        Person p = ana;
-        p.displayRole();          // OK -- Student's own version runs
-        // p.enroll(capstone);    // Would NOT compile: enroll() isn't on Person
-
-        System.out.println();
-        System.out.println("== Polymorphism: one call, many behaviors ==");
-        List<Person> people = List.of(ana, mrLee);
-        for (Person person : people) {
-            person.displayRole();
+        try {
+            account.withdraw(1000);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Rejected: " + e.getMessage());
         }
 
+        // account.balance = -500;  // Would NOT compile: balance is private
+
         System.out.println();
-        System.out.println("== Grading (Gradable) ==");
-        mrLee.grade(ana, capstone, 95);
+        System.out.println("Final balance: $" + account.getBalance());
     }
 }
